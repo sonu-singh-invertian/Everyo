@@ -23,8 +23,9 @@ const categoryData = {
 };
 
 let cartCount = 0;
+let isSignUpMode = false;
 
-// Open Variety Modal with Location Check for Rides
+// Open Category Varieties Modal
 function openCategoryProducts(category) {
     const container = document.getElementById('categoryProductsContainer');
     const title = document.getElementById('modalCategoryTitle');
@@ -33,7 +34,6 @@ function openCategoryProducts(category) {
     container.innerHTML = '';
     title.innerText = category.toUpperCase() + " Varieties";
 
-    // Ride section me Location inputs dikhana
     if (category === 'ride') {
         locationBox.style.display = 'block';
     } else {
@@ -61,7 +61,9 @@ function openCategoryProducts(category) {
     document.getElementById('productModal').style.display = 'flex';
 }
 
-// Ride Confirm Function with Location Input
+function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
+
+// Confirm Ride Booking
 function confirmRideBooking(vehicleName) {
     const pickup = document.getElementById('pickupLocation').value;
     const drop = document.getElementById('dropLocation').value;
@@ -75,17 +77,54 @@ function confirmRideBooking(vehicleName) {
     showToast(`🚕 ${vehicleName} booked from "${pickup}" to "${drop}"! Driver arriving soon.`, "#22c55e");
 }
 
-function closeProductModal() {
-    document.getElementById('productModal').style.display = 'none';
-}
-
+// Add to Cart Logic
 function addToCart(itemName) {
     cartCount++;
     document.getElementById('cartCount').innerText = cartCount;
     showToast("✓ " + itemName + " Added to Cart!", "#22c55e");
 }
 
-// Common Toast Function
+// Login & Sign-Up Logic
+function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+function toggleAuthMode(event) {
+    event.preventDefault();
+    isSignUpMode = !isSignUpMode;
+
+    const authTitle = document.getElementById('authTitle');
+    const nameGroup = document.getElementById('nameGroup');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const toggleText = document.getElementById('toggleText');
+
+    if (isSignUpMode) {
+        authTitle.innerText = "Create Everyo Account";
+        nameGroup.style.display = "block";
+        authSubmitBtn.innerText = "Sign Up";
+        toggleText.innerHTML = 'Already have an account? <a href="#" onclick="toggleAuthMode(event)">Login Here</a>';
+    } else {
+        authTitle.innerText = "Login to Everyo";
+        nameGroup.style.display = "none";
+        authSubmitBtn.innerText = "Login";
+        toggleText.innerHTML = 'New to Everyo? <a href="#" onclick="toggleAuthMode(event)">Create an Account</a>';
+    }
+}
+
+function handleAuthSubmit(event) {
+    event.preventDefault();
+    const contact = document.getElementById('authContact').value;
+    const name = document.getElementById('authName').value;
+
+    closeLoginModal();
+    if (isSignUpMode) {
+        showToast(`🎉 Account Created! Welcome to Everyo, ${name || 'User'}!`, "#22c55e");
+    } else {
+        showToast(`✓ Welcome Back! Logged in as ${contact}`, "#22c55e");
+    }
+    document.getElementById('loginForm').reset();
+}
+
+// Toast Notification
 function showToast(msg, bg) {
     let toast = document.createElement('div');
     toast.style.cssText = `position:fixed; bottom:20px; right:20px; background:${bg}; color:#fff; padding:12px 20px; border-radius:8px; z-index:9999; font-weight:bold; box-shadow:0 4px 10px rgba(0,0,0,0.2);`;
@@ -94,7 +133,7 @@ function showToast(msg, bg) {
     setTimeout(() => toast.remove(), 3000);
 }
 
-// Filter Search Bar
+// Search Filter
 function filterServices() {
     let input = document.getElementById('searchInput').value.toLowerCase();
     let cards = document.getElementsByClassName('card');
@@ -119,6 +158,7 @@ function filterCategory(category, element) {
     });
 }
 
+// Item Registration Modal Controls
 function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
 function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
 
@@ -135,91 +175,4 @@ function registerNewItem(event) {
     document.getElementById('itemForm').reset();
     closeRegisterModal();
     showToast("✓ New item added to " + cat + " category!", "#22c55e");
-}
-
-// Open Variety Modal
-function openCategoryProducts(category) {
-    const container = document.getElementById('categoryProductsContainer');
-    const title = document.getElementById('modalCategoryTitle');
-    container.innerHTML = '';
-
-    title.innerText = category.toUpperCase() + " Varieties";
-
-    if (categoryData[category]) {
-        categoryData[category].forEach(item => {
-            const itemHTML = `
-                <div class="product-item">
-                    <img src="${item.img}" alt="${item.name}">
-                    <h5>${item.name}</h5>
-                    <div class="p-price">${item.price}</div>
-                    <button onclick="addToCart('${item.name}')">Add to Cart</button>
-                </div>
-            `;
-            container.innerHTML += itemHTML;
-        });
-    }
-
-    document.getElementById('productModal').style.display = 'flex';
-}
-
-function closeProductModal() {
-    document.getElementById('productModal').style.display = 'none';
-}
-
-// Add to Cart Logic
-function addToCart(itemName) {
-    cartCount++;
-    document.getElementById('cartCount').innerText = cartCount;
-    
-    let toast = document.createElement('div');
-    toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:#22c55e; color:#fff; padding:12px 20px; border-radius:8px; z-index:9999;";
-    toast.innerText = "✓ " + itemName + " Added to Cart!";
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2500);
-}
-
-// Filter Search Bar
-function filterServices() {
-    let input = document.getElementById('searchInput').value.toLowerCase();
-    let cards = document.getElementsByClassName('card');
-
-    Array.from(cards).forEach(card => {
-        let title = card.getElementsByTagName('h4')[0].innerText.toLowerCase();
-        let desc = card.getElementsByTagName('p')[0].innerText.toLowerCase();
-        card.style.display = (title.includes(input) || desc.includes(input)) ? "flex" : "none";
-    });
-}
-
-// Category Filter Chips
-function filterCategory(category, element) {
-    let cards = document.getElementsByClassName('card');
-    let chips = document.getElementsByClassName('service-chip');
-
-    Array.from(chips).forEach(chip => chip.classList.remove('active'));
-    element.classList.add('active');
-
-    Array.from(cards).forEach(card => {
-        card.style.display = (category === 'all' || card.getAttribute('data-category') === category) ? "flex" : "none";
-    });
-}
-
-// Vendor Registration Form Control
-function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
-function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
-
-function registerNewItem(event) {
-    event.preventDefault();
-
-    let cat = document.getElementById('itemCategory').value;
-    let title = document.getElementById('itemTitle').value;
-    let img = document.getElementById('itemImg').value;
-    let price = document.getElementById('itemPrice').value;
-
-    if(!categoryData[cat]) categoryData[cat] = [];
-
-    categoryData[cat].push({ name: title, price: "₹" + price, img: img });
-
-    document.getElementById('itemForm').reset();
-    closeRegisterModal();
-    alert("New item added to " + cat + " category!");
 }
