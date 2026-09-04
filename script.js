@@ -35,6 +35,19 @@ function filterCategory(category) {
 }
 
 // Service Action Mock
+// Popup Alert Ko Hata Kar Naya Logic
 function openService(serviceName) {
-    alert(serviceName + " section khol diya gaya hai! Yahan aap backend integration kar sakte hain.");
+    // Alert msg hata kar seedhe cart message ya custom modal open kar sakte hain
+    console.log(serviceName + " selected");
+    
+    // Alert ki jagah direct order confirmation message
+    let toast = document.createElement('div');
+    toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:#111827; color:#fff; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.3);";
+    toast.innerText = "✓ " + serviceName + " selected! Proceeding to checkout...";
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
