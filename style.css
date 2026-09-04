@@ -10,6 +10,7 @@ body {
     color: #333;
 }
 
+/* Header & Navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -38,16 +39,22 @@ body {
 
 .user-actions { display: flex; gap: 10px; }
 .user-actions button {
-    background: transparent;
-    border: 1px solid white;
-    color: white;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
+    border: none;
+    font-weight: 600;
 }
 
-.btn-register { background: #ff4757 !important; border: none !important; font-weight: bold; }
+.btn-login { background: #374151; color: white; }
+.btn-login:hover { background: #4b5563; }
 
+.btn-register { background: #ff4757; color: white; }
+.btn-register:hover { background: #e03847; }
+
+.btn-cart { background: transparent; border: 1px solid white !important; color: white; }
+
+/* Quick Category Navigation */
 .services-nav {
     display: flex;
     gap: 10px;
@@ -69,6 +76,7 @@ body {
 
 .service-chip.active { background: #ff4757; color: white; }
 
+/* Main Content Layout */
 .container { padding: 20px 5%; }
 
 .hero-banner {
@@ -128,7 +136,7 @@ body {
 
 .card-footer button:hover { background: #ff4757; }
 
-/* Modal & Variety Grid Styling */
+/* Modals General Style */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -165,6 +173,7 @@ body {
 
 .close-btn { font-size: 24px; cursor: pointer; }
 
+/* Varieties Modal */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -198,10 +207,45 @@ body {
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
+    font-weight: bold;
 }
 
+/* Location Inputs Styling */
+.location-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.loc-input-group {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+}
+
+.loc-input-group:last-child { margin-bottom: 0; }
+.loc-input-group input { border: none; outline: none; width: 100%; margin-left: 10px; font-size: 14px; }
+
+.pickup-icon { color: #22c55e; }
+.drop-icon { color: #ef4444; }
+
+/* Login Modal Custom Styling */
+.login-box { max-width: 400px !important; }
+.login-box .form-group { text-align: left; }
+.auth-toggle { margin-top: 20px; font-size: 14px; color: #64748b; text-align: center; }
+.auth-toggle a { color: #ff4757; font-weight: bold; text-decoration: none; }
+.auth-toggle a:hover { text-decoration: underline; }
+
+/* Form Controls */
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
 .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
 
 .btn-submit { width: 100%; background: #ff4757; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.btn-submit:hover { background: #e03847; }
