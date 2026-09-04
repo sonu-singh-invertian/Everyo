@@ -3,95 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Website Name Updated to Everyo -->
     <title>Everyo - All in One Super App</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="navbar">
-        <!-- Logo Branding Updated -->
         <div class="logo">Ever<span>yo</span></div>
         <div class="search-bar">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search Grocery, Medicines, Cabs, Shopping..." onkeyup="filterServices()">
+            <input type="text" id="searchInput" placeholder="Search Grocery, Medicines, Cabs..." onkeyup="filterServices()">
         </div>
         <div class="user-actions">
             <button class="btn-register" onclick="openRegisterModal()"><i class="fas fa-plus-circle"></i> Add Item/Service</button>
-            <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Cart</button>
+            <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</button>
         </div>
     </header>
 
-    <!-- Quick Service Selector -->
     <section class="services-nav">
         <div class="service-chip active" onclick="filterCategory('all', this)">All</div>
         <div class="service-chip" onclick="filterCategory('grocery', this)"><i class="fas fa-bolt"></i> 10-Min Grocery</div>
         <div class="service-chip" onclick="filterCategory('shopping', this)"><i class="fas fa-shopping-bag"></i> Shopping</div>
         <div class="service-chip" onclick="filterCategory('pharma', this)"><i class="fas fa-pills"></i> Medicines</div>
         <div class="service-chip" onclick="filterCategory('ride', this)"><i class="fas fa-motorcycle"></i> Rides & Cab</div>
-        <div class="service-chip" onclick="filterCategory('travel', this)"><i class="fas fa-plane"></i> Travel & Hotels</div>
     </section>
 
-    <!-- Main Content Area -->
     <main class="container">
-        
-        <!-- Hero Banner -->
         <section class="hero-banner">
             <h2>Welcome to Everyo!</h2>
-            <p>Grocery, Dawa, Shopping ya Ride — Bas ek click me register karein aur order paayein.</p>
+            <p>Grocery, Dawa, Shopping ya Ride — Kisi bhi category par click karke saari varieties dekhein.</p>
         </section>
 
-        <!-- Services Grid -->
         <section class="grid-title">
-            <h3>Popular Services & Items</h3>
+            <h3>Popular Categories</h3>
         </section>
 
         <section class="services-grid" id="servicesGrid">
             
-            <!-- Default Services -->
             <div class="card" data-category="grocery">
-                <div class="card-badge">Instant Delivery</div>
+                <div class="card-badge">10-Min Delivery</div>
                 <i class="fas fa-shopping-basket card-icon"></i>
                 <h4>Fresh Milk & Grocery</h4>
-                <p>10 minute me taaza ration ghar par.</p>
+                <p>Milk, Vegetables, Fruits, Daily Staples</p>
                 <div class="card-footer">
-                    <span class="price">₹60</span>
-                    <button onclick="openService('Grocery')">Order Now</button>
+                    <span class="price">From ₹30</span>
+                    <button onclick="openCategoryProducts('grocery')">View Varieties</button>
                 </div>
             </div>
 
             <div class="card" data-category="ride">
-                <div class="card-badge">Quick Travel</div>
+                <div class="card-badge">Instant Booking</div>
                 <i class="fas fa-motorcycle card-icon"></i>
-                <h4>City Bike Ride</h4>
-                <p>Fast and affordable local rides.</p>
+                <h4>Rides & Cab Services</h4>
+                <p>Bike Taxi, Auto, Mini Cab, Luxury SUV</p>
                 <div class="card-footer">
-                    <span class="price">₹15/km</span>
-                    <button onclick="openService('Bike Ride')">Book Ride</button>
+                    <span class="price">From ₹15/km</span>
+                    <button onclick="openCategoryProducts('ride')">Select Ride</button>
                 </div>
             </div>
 
             <div class="card" data-category="pharma">
                 <div class="card-badge">Verified Meds</div>
                 <i class="fas fa-pills card-icon"></i>
-                <h4>Essential Medicines</h4>
-                <p>Fast pharmacy delivery at your doorstep.</p>
+                <h4>Medicines & Health</h4>
+                <p>Syrups, Painkillers, First-Aid, Immunity</p>
                 <div class="card-footer">
-                    <span class="price">₹30</span>
-                    <button onclick="openService('Medicines')">Order Now</button>
+                    <span class="price">From ₹20</span>
+                    <button onclick="openCategoryProducts('pharma')">Explore Meds</button>
+                </div>
+            </div>
+
+            <div class="card" data-category="shopping">
+                <div class="card-badge">Mega Deals</div>
+                <i class="fas fa-shopping-bag card-icon"></i>
+                <h4>Shopping Store</h4>
+                <p>Electronics, Clothes, Footwear</p>
+                <div class="card-footer">
+                    <span class="price">From ₹199</span>
+                    <button onclick="openCategoryProducts('shopping')">Shop Now</button>
                 </div>
             </div>
 
         </section>
     </main>
 
-    <!-- Registration Form Popup Modal -->
+    <!-- Sub-Items Variety Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modalCategoryTitle">Products Variety</h3>
+                <span class="close-btn" onclick="closeProductModal()">&times;</span>
+            </div>
+            <div class="products-grid" id="categoryProductsContainer">
+                <!-- Varieties will load here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal Form -->
     <div class="modal-overlay" id="registerModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Everyo - Register New Item / Service</h3>
+                <h3>Everyo - Add New Item</h3>
                 <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
             </div>
             <form id="itemForm" onsubmit="registerNewItem(event)">
@@ -102,30 +116,20 @@
                         <option value="shopping">Shopping & Fashion</option>
                         <option value="pharma">Medicine & Health</option>
                         <option value="ride">Ride & Cab Service</option>
-                        <option value="travel">Travel & Hotel</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>Title / Item Name</label>
-                    <input type="text" id="itemTitle" placeholder="e.g. Fresh Apples / Bike Taxi" required>
+                    <input type="text" id="itemTitle" placeholder="e.g. Amul Milk / Bike Ride" required>
                 </div>
-
                 <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="itemDesc" placeholder="e.g. 1kg Pack / AC Taxi" required>
+                    <label>Image URL (Photo Link)</label>
+                    <input type="text" id="itemImg" placeholder="https://..." required>
                 </div>
-
                 <div class="form-group">
                     <label>Price / Fare (₹)</label>
-                    <input type="text" id="itemPrice" placeholder="e.g. ₹120 or ₹15/km" required>
+                    <input type="text" id="itemPrice" placeholder="e.g. 60" required>
                 </div>
-
-                <div class="form-group">
-                    <label>Badge Tag</label>
-                    <input type="text" id="itemBadge" placeholder="e.g. Top Seller / Fast Delivery">
-                </div>
-
                 <button type="submit" class="btn-submit">Add to Everyo</button>
             </form>
         </div>
