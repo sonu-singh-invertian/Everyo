@@ -16,7 +16,8 @@
             <input type="text" id="searchInput" placeholder="Search Grocery, Medicines, Cabs..." onkeyup="filterServices()">
         </div>
         <div class="user-actions">
-            <button class="btn-register" onclick="openRegisterModal()"><i class="fas fa-plus-circle"></i> Add Item/Service</button>
+            <button class="btn-login" onclick="openLoginModal()"><i class="fas fa-user"></i> Login / Register</button>
+            <button class="btn-register" onclick="openRegisterModal()"><i class="fas fa-plus-circle"></i> Add Item</button>
             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</button>
         </div>
     </header>
@@ -88,20 +89,61 @@
         </section>
     </main>
 
-    <!-- Sub-Items Variety Modal -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content modal-large">
             <div class="modal-header">
                 <h3 id="modalCategoryTitle">Products Variety</h3>
                 <span class="close-btn" onclick="closeProductModal()">&times;</span>
             </div>
+
+            <div id="rideLocationBox" class="location-box" style="display: none;">
+                <div class="loc-input-group">
+                    <i class="fas fa-dot-circle pickup-icon"></i>
+                    <input type="text" id="pickupLocation" placeholder="Pickup Location (Kahan se baithna hai?)">
+                </div>
+                <div class="loc-input-group">
+                    <i class="fas fa-map-marker-alt drop-icon"></i>
+                    <input type="text" id="dropLocation" placeholder="Drop Location (Kahan jana hai?)">
+                </div>
+            </div>
+
             <div class="products-grid" id="categoryProductsContainer">
-                <!-- Varieties will load here dynamically -->
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content login-box">
+            <div class="modal-header">
+                <h3 id="authTitle">Login to Everyo</h3>
+                <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+            </div>
+
+            <form id="loginForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile Number or Email</label>
+                    <input type="text" id="authContact" placeholder="e.g. 9876543210 or name@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-submit" id="authSubmitBtn">Login</button>
+            </form>
+
+            <div class="auth-toggle">
+                <p id="toggleText">New to Everyo? <a href="#" onclick="toggleAuthMode(event)">Create an Account</a></p>
             </div>
         </div>
     </div>
 
-    <!-- Registration Modal Form -->
     <div class="modal-overlay" id="registerModal">
         <div class="modal-content">
             <div class="modal-header">
