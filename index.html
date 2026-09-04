@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniHub - All in One Super App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">Omni<span>Hub</span></div>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search Grocery, Medicines, Cabs, Shopping..." onkeyup="filterServices()">
+        </div>
+        <div class="user-actions">
+            <button class="btn-login"><i class="fas fa-user"></i> Login</button>
+            <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Cart</button>
+        </div>
+    </header>
+
+    <section class="services-nav">
+        <div class="service-chip active" onclick="filterCategory('all')">All</div>
+        <div class="service-chip" onclick="filterCategory('grocery')"><i class="fas fa-bolt"></i> 10-Min Grocery</div>
+        <div class="service-chip" onclick="filterCategory('shopping')"><i class="fas fa-shopping-bag"></i> Shopping</div>
+        <div class="service-chip" onclick="filterCategory('pharma')"><i class="fas fa-pills"></i> Medicines</div>
+        <div class="service-chip" onclick="filterCategory('ride')"><i class="fas fa-motorcycle"></i> Rides & Cab</div>
+        <div class="service-chip" onclick="filterCategory('travel')"><i class="fas fa-plane"></i> Travel & Hotels</div>
+    </section>
+
+    <main class="container">
+        
+        <section class="hero-banner">
+            <h2>Sab Kuch Ek Hi Jagah!</h2>
+            <p>Grocery, Dawa, Shopping ya Ride — bas ek click me.</p>
+        </section>
+
+        <section class="grid-title">
+            <h3>Popular Services</h3>
+        </section>
+
+        <section class="services-grid" id="servicesGrid">
+            
+            <div class="card" data-category="grocery">
+                <div class="card-badge">Zepto / Blinkit Style</div>
+                <i class="fas fa-shopping-basket card-icon"></i>
+                <h4>Instant Grocery</h4>
+                <p>10 minute me taaza sabzi aur ration ghar par.</p>
+                <button onclick="openService('Grocery')">Order Now</button>
+            </div>
+
+            <div class="card" data-category="shopping">
+                <div class="card-badge">Amazon / Flipkart Style</div>
+                <i class="fas fa-box-open card-icon"></i>
+                <h4>Mega Store</h4>
+                <p>Electronics, Fashion, Home Decor par sabse saste daam.</p>
+                <button onclick="openService('Shopping')">Explore Products</button>
+            </div>
+
+            <div class="card" data-category="pharma">
+                <div class="card-badge">PharmEasy Style</div>
+                <i class="fas fa-heartbeat card-icon"></i>
+                <h4>Pharmacy & Lab Test</h4>
+                <p>Asli dawaiyaan aur doctor consultation ghar baithe.</p>
+                <button onclick="openService('Medicines')">Order Medicines</button>
+            </div>
+
+            <div class="card" data-category="ride">
+                <div class="card-badge">Rapido / Uber Style</div>
+                <i class="fas fa-taxi card-icon"></i>
+                <h4>Quick Rides</h4>
+                <p>Bike taxi, Auto ya Cab booked karein turant.</p>
+                <button onclick="openService('Rides')">Book Ride</button>
+            </div>
+
+            <div class="card" data-category="travel">
+                <div class="card-badge">MakeMyTrip Style</div>
+                <i class="fas fa-hotel card-icon"></i>
+                <h4>Flight & Hotels</h4>
+                <p>Train, Flight ticket aur Hotel booking discounts ke saath.</p>
+                <button onclick="openService('Travel')">Book Ticket</button>
+            </div>
+
+            <div class="card" data-category="grocery">
+                <div class="card-badge">Zomato Style</div>
+                <i class="fas fa-utensils card-icon"></i>
+                <h4>Food Delivery</h4>
+                <p>Apne pasandida restaurant se garam khana mangwayein.</p>
+                <button onclick="openService('Food')">Order Food</button>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
