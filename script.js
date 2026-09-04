@@ -1,4 +1,71 @@
-// Quick Search Logic
+// Database of Items Variety with Images
+const categoryData = {
+    grocery: [
+        { name: "Amul Taaza Milk 1L", price: "₹68", img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=300&q=80" },
+        { name: "Fresh Organic Bananas (6 Pcs)", price: "₹40", img: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=300&q=80" },
+        { name: "Brown Bread", price: "₹45", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80" },
+        { name: "Fresh Red Tomatoes 1kg", price: "₹35", img: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=300&q=80" }
+    ],
+    pharma: [
+        { name: "Paracetamol 650mg", price: "₹30", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80" },
+        { name: "Vitamin C Tablets", price: "₹120", img: "https://images.unsplash.com/photo-1550572017-edf7b613149e?auto=format&fit=crop&w=300&q=80" },
+        { name: "First Aid Dettol Sanitizer", price: "₹80", img: "https://images.unsplash.com/photo-1584483766114-2cea6facdf57?auto=format&fit=crop&w=300&q=80" }
+    ],
+    ride: [
+        { name: "Quick Bike Taxi", price: "₹15/km", img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80" },
+        { name: "Auto Rickshaw", price: "₹22/km", img: "https://images.unsplash.com/photo-1597042681970-ed493922c23f?auto=format&fit=crop&w=300&q=80" },
+        { name: "AC Mini Cab", price: "₹35/km", img: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=300&q=80" }
+    ],
+    shopping: [
+        { name: "Wireless Earbuds", price: "₹1,299", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=300&q=80" },
+        { name: "Casual Sneakers", price: "₹899", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=300&q=80" }
+    ]
+};
+
+let cartCount = 0;
+
+// Open Variety Modal
+function openCategoryProducts(category) {
+    const container = document.getElementById('categoryProductsContainer');
+    const title = document.getElementById('modalCategoryTitle');
+    container.innerHTML = '';
+
+    title.innerText = category.toUpperCase() + " Varieties";
+
+    if (categoryData[category]) {
+        categoryData[category].forEach(item => {
+            const itemHTML = `
+                <div class="product-item">
+                    <img src="${item.img}" alt="${item.name}">
+                    <h5>${item.name}</h5>
+                    <div class="p-price">${item.price}</div>
+                    <button onclick="addToCart('${item.name}')">Add to Cart</button>
+                </div>
+            `;
+            container.innerHTML += itemHTML;
+        });
+    }
+
+    document.getElementById('productModal').style.display = 'flex';
+}
+
+function closeProductModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
+
+// Add to Cart Logic
+function addToCart(itemName) {
+    cartCount++;
+    document.getElementById('cartCount').innerText = cartCount;
+    
+    let toast = document.createElement('div');
+    toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:#22c55e; color:#fff; padding:12px 20px; border-radius:8px; z-index:9999;";
+    toast.innerText = "✓ " + itemName + " Added to Cart!";
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2500);
+}
+
+// Filter Search Bar
 function filterServices() {
     let input = document.getElementById('searchInput').value.toLowerCase();
     let cards = document.getElementsByClassName('card');
@@ -6,48 +73,40 @@ function filterServices() {
     Array.from(cards).forEach(card => {
         let title = card.getElementsByTagName('h4')[0].innerText.toLowerCase();
         let desc = card.getElementsByTagName('p')[0].innerText.toLowerCase();
-        
-        if (title.includes(input) || desc.includes(input)) {
-            card.style.display = "flex";
-        } else {
-            card.style.display = "none";
-        }
+        card.style.display = (title.includes(input) || desc.includes(input)) ? "flex" : "none";
     });
 }
 
-// Category Filter Logic
-function filterCategory(category) {
+// Category Filter Chips
+function filterCategory(category, element) {
     let cards = document.getElementsByClassName('card');
     let chips = document.getElementsByClassName('service-chip');
 
-    // Update active UI chip
     Array.from(chips).forEach(chip => chip.classList.remove('active'));
-    event.target.classList.add('active');
+    element.classList.add('active');
 
-    // Filter Cards
     Array.from(cards).forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-            card.style.display = "flex";
-        } else {
-            card.style.display = "none";
-        }
+        card.style.display = (category === 'all' || card.getAttribute('data-category') === category) ? "flex" : "none";
     });
 }
 
-// Service Action Mock
-// Popup Alert Ko Hata Kar Naya Logic
-function openService(serviceName) {
-    // Alert msg hata kar seedhe cart message ya custom modal open kar sakte hain
-    console.log(serviceName + " selected");
-    
-    // Alert ki jagah direct order confirmation message
-    let toast = document.createElement('div');
-    toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:#111827; color:#fff; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.3);";
-    toast.innerText = "✓ " + serviceName + " selected! Proceeding to checkout...";
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+// Vendor Registration Form Control
+function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
+function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
+
+function registerNewItem(event) {
+    event.preventDefault();
+
+    let cat = document.getElementById('itemCategory').value;
+    let title = document.getElementById('itemTitle').value;
+    let img = document.getElementById('itemImg').value;
+    let price = document.getElementById('itemPrice').value;
+
+    if(!categoryData[cat]) categoryData[cat] = [];
+
+    categoryData[cat].push({ name: title, price: "₹" + price, img: img });
+
+    document.getElementById('itemForm').reset();
+    closeRegisterModal();
+    alert("New item added to " + cat + " category!");
 }
