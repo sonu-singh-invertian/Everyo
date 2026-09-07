@@ -198,3 +198,81 @@ function registerNewItem(event) {
     closeRegisterModal();
     showToast("✓ New item added to " + cat + " category!", "#22c55e");
 }
+let cartItems = [];
+
+// Cart me item save karne wala function
+function addToCart(itemName) {
+    // Extract price integer from string or category database
+    let foundPrice = 0;
+    for (let cat in categoryData) {
+        let matched = categoryData[cat].find(i => i.name === itemName);
+        if (matched) {
+            foundPrice = parseInt(matched.price.replace(/[^0-9]/g, '')) || 0;
+            break;
+        }
+    }
+
+    cartItems.push({ name: itemName, price: foundPrice });
+    updateCartUI();
+    showToast("✓ " + itemName + " Added to Cart!", "#22c55e");
+}
+
+// Cart UI Update Logic
+function updateCartUI() {
+    document.getElementById('cartCount').innerText = cartItems.length;
+    const container = document.getElementById('cartItemsList');
+    const totalElem = document.getElementById('cartTotalAmount');
+
+    if (cartItems.length === 0) {
+        container.innerHTML = '<p class="empty-cart-msg">Your cart is empty!</p>';
+        totalElem.innerText = '₹0';
+        return;
+    }
+
+    let html = '';
+    let total = 0;
+
+    cartItems.forEach((item, index) => {
+        total += item.price;
+        html += `
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <h5>${item.name}</h5>
+                    <p>₹${item.price}</p>
+                </div>
+                <button class="btn-remove" onclick="removeFromCart(${index})">Remove</button>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+    totalElem.innerText = "₹" + total;
+}
+
+// Remove item from cart
+function removeFromCart(index) {
+    cartItems.splice(index, 1);
+    updateCartUI();
+}
+
+// Cart Modal Toggle
+function openCartModal() {
+    updateCartUI();
+    document.getElementById('cartModal').style.display = 'flex';
+}
+
+function closeCartModal() {
+    document.getElementById('cartModal').style.display = 'none';
+}
+
+// Checkout Logic
+function checkoutCart() {
+    if (cartItems.length === 0) {
+        showToast("⚠️ Add items to cart before checkout!", "#ef4444");
+        return;
+    }
+    closeCartModal();
+    cartItems = [];
+    updateCartUI();
+    showToast("🎉 Order Placed Successfully!", "#22c55e");
+}
