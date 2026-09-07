@@ -9,6 +9,7 @@
 </head>
 <body>
 
+    <!-- Header Section -->
     <header class="navbar">
         <div class="logo">Ever<span>yo</span></div>
         <div class="search-bar">
@@ -16,12 +17,31 @@
             <input type="text" id="searchInput" placeholder="Search Grocery, Medicines, Cabs..." onkeyup="filterServices()">
         </div>
         <div class="user-actions">
-            <button class="btn-login" onclick="openLoginModal()"><i class="fas fa-user"></i> Login / Register</button>
+            <!-- Logged Out State -->
+            <div id="loggedOutNav">
+                <button class="btn-login" onclick="openLoginModal()"><i class="fas fa-user"></i> Login / Register</button>
+            </div>
+
+            <!-- Logged In State (Hidden by Default) -->
+            <div id="loggedInNav" style="display: none;" class="profile-dropdown-container">
+                <button class="btn-profile" onclick="toggleProfileMenu()">
+                    <i class="fas fa-user-circle"></i> <span id="navUserName">User</span> <i class="fas fa-caret-down"></i>
+                </button>
+                <div id="profileMenu" class="profile-menu">
+                    <div class="profile-info">
+                        <p id="menuUserContact" class="user-contact"></p>
+                    </div>
+                    <hr>
+                    <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+
             <button class="btn-register" onclick="openRegisterModal()"><i class="fas fa-plus-circle"></i> Add Item</button>
             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</button>
         </div>
     </header>
 
+    <!-- Service Selector Navigation -->
     <section class="services-nav">
         <div class="service-chip active" onclick="filterCategory('all', this)">All</div>
         <div class="service-chip" onclick="filterCategory('grocery', this)"><i class="fas fa-bolt"></i> 10-Min Grocery</div>
@@ -30,6 +50,7 @@
         <div class="service-chip" onclick="filterCategory('ride', this)"><i class="fas fa-motorcycle"></i> Rides & Cab</div>
     </section>
 
+    <!-- Main Content Area -->
     <main class="container">
         <section class="hero-banner">
             <h2>Welcome to Everyo!</h2>
@@ -41,7 +62,6 @@
         </section>
 
         <section class="services-grid" id="servicesGrid">
-            
             <div class="card" data-category="grocery">
                 <div class="card-badge">10-Min Delivery</div>
                 <i class="fas fa-shopping-basket card-icon"></i>
@@ -85,10 +105,10 @@
                     <button onclick="openCategoryProducts('shopping')">Shop Now</button>
                 </div>
             </div>
-
         </section>
     </main>
 
+    <!-- Varieties Modal -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content modal-large">
             <div class="modal-header">
@@ -107,11 +127,11 @@
                 </div>
             </div>
 
-            <div class="products-grid" id="categoryProductsContainer">
-                </div>
+            <div class="products-grid" id="categoryProductsContainer"></div>
         </div>
     </div>
 
+    <!-- Login / Sign-Up Modal -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content login-box">
             <div class="modal-header">
@@ -144,6 +164,7 @@
         </div>
     </div>
 
+    <!-- Add Item Modal -->
     <div class="modal-overlay" id="registerModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -162,14 +183,14 @@
                 </div>
                 <div class="form-group">
                     <label>Title / Item Name</label>
-                    <input type="text" id="itemTitle" placeholder="e.g. Amul Milk / Bike Ride" required>
+                    <input type="text" id="itemTitle" placeholder="e.g. Amul Milk" required>
                 </div>
                 <div class="form-group">
-                    <label>Image URL (Photo Link)</label>
+                    <label>Image URL</label>
                     <input type="text" id="itemImg" placeholder="https://..." required>
                 </div>
                 <div class="form-group">
-                    <label>Price / Fare (₹)</label>
+                    <label>Price (₹)</label>
                     <input type="text" id="itemPrice" placeholder="e.g. 60" required>
                 </div>
                 <button type="submit" class="btn-submit">Add to Everyo</button>
