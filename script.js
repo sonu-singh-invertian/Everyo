@@ -1,4 +1,3 @@
-// Database of Items Variety with Images
 const categoryData = {
     grocery: [
         { name: "Amul Taaza Milk 1L", price: "₹68", img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=300&q=80" },
@@ -25,7 +24,7 @@ const categoryData = {
 let cartCount = 0;
 let isSignUpMode = false;
 
-// Open Category Varieties Modal
+// Open Categories
 function openCategoryProducts(category) {
     const container = document.getElementById('categoryProductsContainer');
     const title = document.getElementById('modalCategoryTitle');
@@ -34,11 +33,7 @@ function openCategoryProducts(category) {
     container.innerHTML = '';
     title.innerText = category.toUpperCase() + " Varieties";
 
-    if (category === 'ride') {
-        locationBox.style.display = 'block';
-    } else {
-        locationBox.style.display = 'none';
-    }
+    locationBox.style.display = (category === 'ride') ? 'block' : 'none';
 
     if (categoryData[category]) {
         categoryData[category].forEach(item => {
@@ -63,7 +58,6 @@ function openCategoryProducts(category) {
 
 function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
 
-// Confirm Ride Booking
 function confirmRideBooking(vehicleName) {
     const pickup = document.getElementById('pickupLocation').value;
     const drop = document.getElementById('dropLocation').value;
@@ -74,17 +68,16 @@ function confirmRideBooking(vehicleName) {
     }
 
     closeProductModal();
-    showToast(`🚕 ${vehicleName} booked from "${pickup}" to "${drop}"! Driver arriving soon.`, "#22c55e");
+    showToast(`🚕 ${vehicleName} booked from "${pickup}" to "${drop}"!`, "#22c55e");
 }
 
-// Add to Cart Logic
 function addToCart(itemName) {
     cartCount++;
     document.getElementById('cartCount').innerText = cartCount;
     showToast("✓ " + itemName + " Added to Cart!", "#22c55e");
 }
 
-// Login & Sign-Up Logic
+// LOGIN & USER PROFILE LOGIC
 function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
 function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
@@ -116,15 +109,47 @@ function handleAuthSubmit(event) {
     const name = document.getElementById('authName').value;
 
     closeLoginModal();
+
+    // User Profile Display Setup
+    const userName = name || contact.split('@')[0];
+    document.getElementById('navUserName').innerText = userName;
+    document.getElementById('menuUserContact').innerText = contact;
+
+    // Switch View
+    document.getElementById('loggedOutNav').style.display = 'none';
+    document.getElementById('loggedInNav').style.display = 'block';
+
     if (isSignUpMode) {
-        showToast(`🎉 Account Created! Welcome to Everyo, ${name || 'User'}!`, "#22c55e");
+        showToast(`🎉 Welcome to Everyo, ${userName}!`, "#22c55e");
     } else {
-        showToast(`✓ Welcome Back! Logged in as ${contact}`, "#22c55e");
+        showToast(`✓ Welcome Back, ${userName}!`, "#22c55e");
     }
+
     document.getElementById('loginForm').reset();
 }
 
-// Toast Notification
+function toggleProfileMenu() {
+    document.getElementById('profileMenu').classList.toggle('show');
+}
+
+function logoutUser(event) {
+    event.preventDefault();
+    document.getElementById('loggedInNav').style.display = 'none';
+    document.getElementById('loggedOutNav').style.display = 'block';
+    document.getElementById('profileMenu').classList.remove('show');
+    showToast("Logged out successfully!", "#3b82f6");
+}
+
+// Close Dropdown Outside Click
+window.onclick = function(event) {
+    if (!event.target.matches('.btn-profile') && !event.target.matches('.btn-profile *')) {
+        const menu = document.getElementById('profileMenu');
+        if (menu && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    }
+}
+
 function showToast(msg, bg) {
     let toast = document.createElement('div');
     toast.style.cssText = `position:fixed; bottom:20px; right:20px; background:${bg}; color:#fff; padding:12px 20px; border-radius:8px; z-index:9999; font-weight:bold; box-shadow:0 4px 10px rgba(0,0,0,0.2);`;
@@ -133,7 +158,6 @@ function showToast(msg, bg) {
     setTimeout(() => toast.remove(), 3000);
 }
 
-// Search Filter
 function filterServices() {
     let input = document.getElementById('searchInput').value.toLowerCase();
     let cards = document.getElementsByClassName('card');
@@ -145,7 +169,6 @@ function filterServices() {
     });
 }
 
-// Category Filter Chips
 function filterCategory(category, element) {
     let cards = document.getElementsByClassName('card');
     let chips = document.getElementsByClassName('service-chip');
@@ -158,7 +181,6 @@ function filterCategory(category, element) {
     });
 }
 
-// Item Registration Modal Controls
 function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
 function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
 
