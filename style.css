@@ -254,6 +254,60 @@ body {
     width: 100%;
     font-weight: bold;
 }
+/* Cart Modal Styling */
+.cart-items-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.cart-item-details h5 {
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.cart-item-details p {
+    font-size: 13px;
+    color: #ff4757;
+    font-weight: bold;
+}
+
+.btn-remove {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.cart-summary {
+    border-top: 2px solid #e2e8f0;
+    padding-top: 15px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.empty-cart-msg {
+    text-align: center;
+    color: #64748b;
+    padding: 20px 0;
+}
 
 /* Ride Location Box */
 .location-box {
